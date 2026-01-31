@@ -5,6 +5,10 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>PutridParrot.Scanner.Cli</PackageId>
+    <Authors>PutridParrot</Authors>
+    <Description>Scanner CLI global tool by PutridParrot</Description>
+    <ToolCommandName>platformscan</ToolCommandName>
   </PropertyGroup>
 
   <ItemGroup>

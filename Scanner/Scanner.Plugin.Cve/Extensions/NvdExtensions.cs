@@ -6,7 +6,7 @@ internal static class NvdExtensions
 {
     extension(NvdCve cve)
     {
-        public IEnumerable<string> Vendors()
+        public IEnumerable<string?> Vendors()
         {
             return cve.Configurations?
                        .SelectMany(c => c.Nodes)
@@ -17,7 +17,7 @@ internal static class NvdExtensions
                    ?? Enumerable.Empty<string>();
         }
 
-        public IEnumerable<string> Products()
+        public IEnumerable<string?> Products()
         {
             return cve.Configurations?
                        .SelectMany(c => c.Nodes)
