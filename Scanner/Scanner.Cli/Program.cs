@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Scanner.Cli;
 using Scanner.Core;
@@ -12,7 +13,32 @@ using Scanner.Plugins.HttpHeader.Options;
 using Scanner.Plugins.Tls;
 using Scanner.Plugins.Tls.Options;
 
-var builder = Host.CreateApplicationBuilder(args);
+// Extract config file argument before building host
+string? configFile = null;
+for (int i = 0; i < args.Length - 1; i++)
+{
+    if (args[i] == "--config" || args[i] == "-c")
+    {
+        configFile = args[i + 1];
+        break;
+    }
+}
+
+var builder = Host.CreateApplicationBuilder(new HostApplicationBuilderSettings
+{
+    Args = args,
+    DisableDefaults = false
+});
+
+// Configure custom appsettings.json if provided
+if (!string.IsNullOrEmpty(configFile))
+{
+    builder.Configuration.Sources.Clear();
+    builder.Configuration
+        .AddJsonFile(configFile, optional: false, reloadOnChange: true)
+        .AddEnvironmentVariables()
+        .AddCommandLine(args);
+}
 
 builder.Services.AddLogging();
 builder.Services.AddSingleton<ScanRunner>();

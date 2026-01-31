@@ -11,6 +11,14 @@ public sealed class App(IHost host)
     {
         var root = new RootCommand("Platform Scanner CLI");
 
+        // Global --config option
+        var configOption = new Option<string?>(
+            name: "--config",
+            description: "Path to custom appsettings.json file"
+        );
+        configOption.AddAlias("-c");
+        root.AddGlobalOption(configOption);
+
         // scanner list
         var listCmd = new Command("list", "List all available scanners");
 
@@ -43,7 +51,7 @@ public sealed class App(IHost host)
         runCmd.AddOption(outputOption);
 
         runCmd.SetHandler(
-            async (plugins, format, output) =>
+            async (string[] plugins, string format, string? output) =>
             {
                 await RunPlugins(plugins, format, output);
             },
