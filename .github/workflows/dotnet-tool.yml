@@ -27,8 +27,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: PutridParrot.Scanner.Cli
-          path:  /home/runner/work/Scanner/Scanner.Cli/Scanner.Cli/bin/Release/PutridParrot.Scanner.*.nupkg
+          path: /home/runner/work/PlatformScan/PlatformScan/Scanner/Scanner.Cli/bin/Release/net10.0/PutridParrot.Scanner.*.nupkg
       - name: Publish .nupkg to NuGet.org
-        run: dotnet nuget push /home/runner/work/Scanner/Scanner.Cli/bin/Release/PutridParrot.Scanner.*.nupkg  --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push /home/runner/work/PlatformScan/PlatformScan/Scanner/Scanner.Cli/bin/Release/net10.0/PutridParrot.Scanner.*.nupkg  --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
