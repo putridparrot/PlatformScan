@@ -8,3 +8,6 @@ Essentially the idea is you'd run the scanner from a scheduler, such as Azure De
 ## Scan Plugins
 
 * [TLS and Certificate Plugin](Scanner/Scanner.Plugins.Tls/README.md)
+* [HTTP Header Plugin](Scanner/Scanner.Plugins.HttpHeader/README.md)
+* [CVE Plugin](Scanner/Scanner.Plugins.Cve/README.md)
+* [AKS Plugin](Scanner/Scanner.Plugins.Aks/README.md)
