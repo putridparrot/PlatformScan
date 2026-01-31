@@ -1,0 +1,39 @@
+﻿{
+  "profiles": {
+    "Scanner (run all)": {
+      "commandName": "Project",
+      "commandLineArgs": "run",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    },
+    "Scanner (List plugins)": {
+      "commandName": "Project",
+      "commandLineArgs": "list",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    },
+    "Scanner (TLS only)": {
+      "commandName": "Project",
+      "commandLineArgs": "run --plugin tls",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    },
+    "Scanner (HTTP Headers)": {
+      "commandName": "Project",
+      "commandLineArgs": "run --plugin http-headers",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    },
+    "Scanner (CVE)": {
+      "commandName": "Project",
+      "commandLineArgs": "run --plugin cve",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

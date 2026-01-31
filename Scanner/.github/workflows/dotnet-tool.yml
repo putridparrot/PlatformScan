@@ -1,0 +1,33 @@
+name: Build and Pack .NET Global Tool
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Restore dependencies
+        run: dotnet restore Scanner.slnx
+      - name: Build
+        run: dotnet build Scanner.slnx --configuration Release --no-restore
+      - name: Test
+        run: dotnet test Scanner.slnx --no-build --verbosity normal
+      - name: Pack CLI as .NET Tool
+        run: dotnet pack Scanner.Cli/Scanner.Cli.csproj --configuration Release --output ./artifacts --no-build
+      - name: Upload .nupkg artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-tool-nupkg-${{ matrix.os }}
+          path: ./artifacts/*.nupkg

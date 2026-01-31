@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="Scanner.Cli/Scanner.Cli.csproj" />
+  <Project Path="Scanner.Core/Scanner.Core.csproj" Id="f3bb2573-ab55-4e7b-8a52-d4e97dc815b4" />
+  <Project Path="Scanner.Formatters/Scanner.Formatters.csproj" Id="4d7e207a-6e2e-4943-b023-54b53c933985" />
+  <Project Path="Scanner.Plugin.Cve/Scanner.Plugin.Cve.csproj" Id="383a352c-a112-4791-a1ef-644bf43e9303" />
+  <Project Path="Scanner.Plugins.Aks/Scanner.Plugins.Aks.csproj" Id="632321b4-d252-403e-8a36-e665b157d6c1" />
+  <Project Path="Scanner.Plugins.HttpHeader/Scanner.Plugins.HttpHeader.csproj" Id="f50a9cd2-61b6-424d-a778-381838915bbf" />
+  <Project Path="Scanner.Plugins.Tls/Scanner.Plugins.Tls.csproj" Id="118dd5bd-557a-4f53-bc67-5a1a162f831e" />
+</Solution>
