@@ -9,6 +9,7 @@
     <Authors>PutridParrot</Authors>
     <Description>Scanner CLI global tool by PutridParrot</Description>
     <ToolCommandName>platformscan</ToolCommandName>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
