@@ -15,7 +15,7 @@ using Scanner.Plugins.Tls.Options;
 
 // Extract config file argument before building host
 string? configFile = null;
-for (int i = 0; i < args.Length - 1; i++)
+for (var i = 0; i < args.Length - 1; i++)
 {
     if (args[i] == "--config" || args[i] == "-c")
     {
