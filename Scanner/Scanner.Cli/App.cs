@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Scanner.Cli.Options;
 using Scanner.Core;
 using System.CommandLine;
 
@@ -50,14 +52,22 @@ public sealed class App(IHost host)
         );
         runCmd.AddOption(outputOption);
 
+        // teams webhook
+        var teamsOption = new Option<string?>(
+            name: "--teams",
+            description: "Send results to Microsoft Teams webhook URL (overrides config file)"
+        );
+        runCmd.AddOption(teamsOption);
+
         runCmd.SetHandler(
-            async (string[] plugins, string format, string? output) =>
+            async (string[] plugins, string format, string? output, string? teams) =>
             {
-                await RunPlugins(plugins, format, output);
+                await RunPlugins(plugins, format, output, teams);
             },
             pluginOption,
             formatOption,
-            outputOption
+            outputOption,
+            teamsOption
         );
 
         root.AddCommand(runCmd);
@@ -77,7 +87,7 @@ public sealed class App(IHost host)
         }
     }
 
-    private async Task RunPlugins(string[] pluginNames, string format, string? outputFile)
+    private async Task RunPlugins(string[] pluginNames, string format, string? outputFile, string? teamsWebhook)
     {
         var runner = host.Services.GetRequiredService<ScanRunner>();
         var findings = await runner.RunAsync(pluginNames, CancellationToken.None);
@@ -85,6 +95,12 @@ public sealed class App(IHost host)
         var formatter = ResolveFormatter(format);
 
         var output = formatter.Format(findings);
+
+        // Send to Teams if webhook is provided
+        if (!string.IsNullOrWhiteSpace(teamsWebhook))
+        {
+            await SendToTeams(teamsWebhook, findings);
+        }
 
         // Write to file or console depending on format
         if (format.Equals("console", StringComparison.OrdinalIgnoreCase))
@@ -110,5 +126,36 @@ public sealed class App(IHost host)
             throw new InvalidOperationException($"Unknown format '{format}'");
 
         return match;
+    }
+
+    private async Task SendToTeams(string? webhookUrl, IReadOnlyCollection<ScanFinding> findings)
+    {
+        // Get webhook from parameter or config
+        if (string.IsNullOrWhiteSpace(webhookUrl))
+        {
+            var teamsOptions = host.Services.GetRequiredService<IOptions<TeamsOptions>>();
+            webhookUrl = teamsOptions.Value.WebhookUrl;
+        }
+
+        if (string.IsNullOrWhiteSpace(webhookUrl))
+        {
+            Console.WriteLine("⚠️  Teams webhook URL not provided. Skipping Teams notification.");
+            return;
+        }
+
+        try
+        {
+            var formatter = ResolveFormatter("teams");
+            var payload = formatter.Format(findings);
+
+            var sender = host.Services.GetRequiredService<TeamsSender>();
+            await sender.SendAsync(webhookUrl, payload);
+
+            Console.WriteLine("✅ Results sent to Microsoft Teams successfully.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Failed to send to Teams: {ex.Message}");
+        }
     }
 }

@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Scanner.Cli;
+using Scanner.Cli.Options;
 using Scanner.Core;
 using Scanner.Formatters;
 using Scanner.Plugin.Cve;
@@ -75,12 +76,20 @@ builder.Services
     .Bind(builder.Configuration.GetSection("AksHealth"))
     .ValidateOnStart();
 
+builder.Services
+    .AddOptions<TeamsOptions>()
+    .Bind(builder.Configuration.GetSection("Teams"))
+    .ValidateOnStart();
+
 builder.Services.AddSingleton<IScanResultFormatter, JunitScanResultFormatter>();
 builder.Services.AddSingleton<IScanResultFormatter, ConsoleScanResultFormatter>();
 builder.Services.AddSingleton<IScanResultFormatter, MarkdownScanResultFormatter>();
 builder.Services.AddSingleton<IScanResultFormatter, HtmlScanResultFormatter>();
 builder.Services.AddSingleton<IScanResultFormatter, JsonScanResultFormatter>();
 builder.Services.AddSingleton<IScanResultFormatter, SarifScanResultFormatter>();
+builder.Services.AddSingleton<IScanResultFormatter, TeamsScanResultFormatter>();
+
+builder.Services.AddSingleton<TeamsSender>();
 
 var host = builder.Build();
 
