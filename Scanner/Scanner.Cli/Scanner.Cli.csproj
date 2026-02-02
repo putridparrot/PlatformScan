@@ -8,7 +8,7 @@
     
     <!-- Package Metadata -->
     <PackageId>PutridParrot.Scanner.Cli</PackageId>
-    <Version>1.0.0-alpha</Version>
+    <Version>1.0.1-alpha</Version>
     <Authors>PutridParrot</Authors>
     <Description>Platform scanner CLI tool for security and health checks (TLS, HTTP headers, CVE monitoring, AKS health). Supports multiple output formats including JUnit, JSON, SARIF, Markdown, HTML, and Microsoft Teams.</Description>
     <PackageTags>scanner;security;tls;ssl;cve;aks;kubernetes;cli;devops;dotnet-tool</PackageTags>
