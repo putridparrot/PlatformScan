@@ -5,11 +5,23 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    
+    <!-- Package Metadata -->
     <PackageId>PutridParrot.Scanner.Cli</PackageId>
+    <Version>1.0.0-alpha</Version>
     <Authors>PutridParrot</Authors>
-    <Description>Scanner CLI global tool by PutridParrot</Description>
-    <ToolCommandName>platformscan</ToolCommandName>
+    <Description>Platform scanner CLI tool for security and health checks (TLS, HTTP headers, CVE monitoring, AKS health). Supports multiple output formats including JUnit, JSON, SARIF, Markdown, HTML, and Microsoft Teams.</Description>
+    <PackageTags>scanner;security;tls;ssl;cve;aks;kubernetes;cli;devops;dotnet-tool</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/putridparrot/PlatformScan</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/putridparrot/PlatformScan</PackageProjectUrl>
+    
+    <!-- Tool Configuration -->
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>platformscan</ToolCommandName>
+    <PackageType>DotnetTool</PackageType>
   </PropertyGroup>
 
   <ItemGroup>
