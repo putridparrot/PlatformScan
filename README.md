@@ -11,3 +11,4 @@ Essentially the idea is you'd run the scanner from a scheduler, such as Azure De
 * [HTTP Header Plugin](Scanner/Scanner.Plugins.HttpHeader/README.md)
 * [CVE Plugin](Scanner/Scanner.Plugins.Cve/README.md)
 * [AKS Plugin](Scanner/Scanner.Plugins.Aks/README.md)
+

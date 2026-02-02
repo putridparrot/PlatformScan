@@ -22,8 +22,6 @@ jobs:
         run: dotnet build Scanner/Scanner.slnx --configuration Release --no-restore
       - name: Test
         run: dotnet test Scanner/Scanner.slnx --no-build --verbosity normal
-      - name: Copy root README.md to Scanner.Cli
-        run: cp README.md Scanner/Scanner.Cli/README.md
 
       - name: Pack CLI as .NET Tool
         run: dotnet pack Scanner/Scanner.Cli/Scanner.Cli.csproj --configuration Release --output ../artifacts --no-build
