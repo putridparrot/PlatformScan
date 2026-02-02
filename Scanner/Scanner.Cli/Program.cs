@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Scanner.Cli;
 using Scanner.Cli.Options;
 using Scanner.Core;
@@ -14,14 +15,19 @@ using Scanner.Plugins.HttpHeader.Options;
 using Scanner.Plugins.Tls;
 using Scanner.Plugins.Tls.Options;
 
-// Extract config file argument before building host
+// Extract config file and verbose arguments before building host
 string? configFile = null;
-for (var i = 0; i < args.Length - 1; i++)
+bool verbose = false;
+
+for (var i = 0; i < args.Length; i++)
 {
-    if (args[i] == "--config" || args[i] == "-c")
+    if ((args[i] == "--config" || args[i] == "-c") && i + 1 < args.Length)
     {
         configFile = args[i + 1];
-        break;
+    }
+    else if (args[i] == "--verbose" || args[i] == "-v")
+    {
+        verbose = true;
     }
 }
 
@@ -41,6 +47,29 @@ if (!string.IsNullOrEmpty(configFile))
         .AddCommandLine(args);
 }
 
+// Configure logging: off by default, enable with --verbose, or respect user's appsettings.json
+builder.Logging.ClearProviders();
+
+// Check if user has configured logging in appsettings.json
+var loggingSection = builder.Configuration.GetSection("Logging");
+var hasUserLoggingConfig = loggingSection.Exists();
+
+if (verbose)
+{
+    // --verbose flag enables logging
+    builder.Logging.AddConsole();
+    builder.Logging.AddFilter("Microsoft", LogLevel.Information);
+    builder.Logging.AddFilter("System", LogLevel.Information);
+    builder.Logging.AddFilter("Scanner", LogLevel.Debug);
+}
+else if (hasUserLoggingConfig)
+{
+    // Respect user's logging configuration from appsettings.json
+    builder.Logging.AddConfiguration(loggingSection);
+    builder.Logging.AddConsole();
+}
+// else: logging stays disabled (no providers added)
+
 builder.Services.AddLogging();
 builder.Services.AddSingleton<ScanRunner>();
 
@@ -51,24 +80,21 @@ builder.Services.AddSingleton<IScannerPlugin, HttpHeaderScannerPlugin>();
 builder.Services.AddSingleton<IScannerPlugin, CveScannerPlugin>();
 builder.Services.AddSingleton<IScannerPlugin, AksHealthPlugin>();
 
-builder.Services.Configure<TlsScannerOptions>(
-    builder.Configuration.GetSection("TlsScanner"));
-
 builder.Services
     .AddOptions<TlsScannerOptions>()
-    .Bind(builder.Configuration.GetSection("TlsScanner"))
+    .Bind(builder.Configuration.GetSection("Tls"))
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
 builder.Services
     .AddOptions<HttpHeaderScannerOptions>()
-    .Bind(builder.Configuration.GetSection("HttpHeaderScanner"))
+    .Bind(builder.Configuration.GetSection("HttpHeader"))
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
 builder.Services
     .AddOptions<CveScannerOptions>()
-    .Bind(builder.Configuration.GetSection("CveScanner"))
+    .Bind(builder.Configuration.GetSection("Cve"))
     .ValidateOnStart();
 
 builder.Services

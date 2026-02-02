@@ -417,3 +417,4 @@ FodyWeavers.xsd
 *.msm
 *.msp
 /.local
+/Scanner/Scanner.Cli/appsettings.json

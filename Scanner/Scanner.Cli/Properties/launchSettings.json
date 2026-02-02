@@ -30,7 +30,7 @@
     },
     "Scanner (CVE)": {
       "commandName": "Project",
-      "commandLineArgs": "run --plugin cve",
+      "commandLineArgs": "run --plugin cve -c D:\\Development\\putridparrot\\PlatformScan\\Scanner\\Scanner.Cli\\appsettings.json",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       }
