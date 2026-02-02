@@ -7,6 +7,8 @@ public sealed class TeamsSender(HttpClient httpClient)
 {
     public async Task SendAsync(string webhookUrl, string jsonPayload, CancellationToken ct = default)
     {
+        throw new NotImplementedException();
+
         if (string.IsNullOrWhiteSpace(webhookUrl))
             throw new ArgumentException("Webhook URL cannot be empty", nameof(webhookUrl));
 
